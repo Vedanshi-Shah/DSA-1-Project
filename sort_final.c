@@ -8,12 +8,268 @@
 typedef struct flags{
 	int numeric;
 	int reverse;
-	int checksort;
+	int checksort;//not done yet
 	int unique;
     int output;
     int ignore;
     int help;
 }flags;
+typedef struct Heap_float{
+    float data;
+    char *fileName;
+    fpos_t address;
+}Heap_ele_float;
+typedef struct Heap_string{
+    char *data;
+    char *fileName;
+    fpos_t address;
+}Heap_ele_string;
+Heap_ele_float heap_float[1000000];
+Heap_ele_string heap_string[1000000];
+int HeapSize_string;
+int HeapSize_float;
+void Init_string(){
+    HeapSize_string=0;
+    heap_string[0].data="";
+    heap_string[0].fileName="";
+}
+void Insert_string(char *data,char *fileName,fpos_t address){
+    HeapSize_string++;
+    heap_string[HeapSize_string].data=(char *)malloc((strlen(data)+1)*sizeof(char));
+    strcpy(heap_string[HeapSize_string].data,data);
+    heap_string[HeapSize_string].fileName=(char *)malloc((strlen(fileName)+1)*sizeof(char));
+    strcpy(heap_string[HeapSize_string].fileName,fileName);
+    heap_string[HeapSize_string].address=address;
+    Heap_ele_string temp=heap_string[HeapSize_string];
+    int k=HeapSize_string;
+    for(int i=1;i<HeapSize_string;i++){
+        if(strcmp(heap_string[i].data,temp.data)<0){
+            k=i;
+            temp=heap_string[i];
+        }
+    }
+    if(k!=HeapSize_string){
+        temp=heap_string[HeapSize_string];
+        heap_string[HeapSize_string]=heap_string[k];
+        heap_string[k]=temp;
+    }
+}
+Heap_ele_string Delete_string(){
+    Heap_ele_string res=heap_string[HeapSize_string];
+    --HeapSize_string;
+    Heap_ele_string temp=heap_string[HeapSize_string];
+    int k=HeapSize_string;
+    for(int i=1;i<HeapSize_string;i++){
+        if(strcmp(heap_string[i].data,temp.data)<0){
+            k=i;
+            temp=heap_string[i];
+        }
+    }
+    if(k!=HeapSize_string){
+        temp=heap_string[HeapSize_string];
+        heap_string[HeapSize_string]=heap_string[k];
+        heap_string[k]=temp;
+    }
+    return res;
+}
+void Insert_string_ignore(char *data,char *fileName,fpos_t address){
+    HeapSize_string++;
+    heap_string[HeapSize_string].data=(char *)malloc((strlen(data)+1)*sizeof(char));
+    strcpy(heap_string[HeapSize_string].data,data);
+    heap_string[HeapSize_string].fileName=(char *)malloc((strlen(fileName)+1)*sizeof(char));
+    strcpy(heap_string[HeapSize_string].fileName,fileName);
+    heap_string[HeapSize_string].address=address;
+    Heap_ele_string temp=heap_string[HeapSize_string];
+    int k=HeapSize_string;
+    for(int i=1;i<HeapSize_string;i++){
+        if(strcasecmp(heap_string[i].data,temp.data)<0){
+            k=i;
+            temp=heap_string[i];
+        }
+    }
+    if(k!=HeapSize_string){
+        temp=heap_string[HeapSize_string];
+        heap_string[HeapSize_string]=heap_string[k];
+        heap_string[k]=temp;
+    }
+}
+Heap_ele_string Delete_string_ignore(){
+    Heap_ele_string res=heap_string[HeapSize_string];
+    --HeapSize_string;
+    Heap_ele_string temp=heap_string[HeapSize_string];
+    int k=HeapSize_string;
+    for(int i=1;i<HeapSize_string;i++){
+        if(strcasecmp(heap_string[i].data,temp.data)<0){
+            k=i;
+            temp=heap_string[i];
+        }
+    }
+    if(k!=HeapSize_string){
+        temp=heap_string[HeapSize_string];
+        heap_string[HeapSize_string]=heap_string[k];
+        heap_string[k]=temp;
+    }
+    return res;
+}
+void Insert_string_reverse(char *data,char *fileName,fpos_t address){
+    HeapSize_string++;
+    heap_string[HeapSize_string].data=(char *)malloc((strlen(data)+1)*sizeof(char));
+    strcpy(heap_string[HeapSize_string].data,data);
+    heap_string[HeapSize_string].fileName=(char *)malloc((strlen(fileName)+1)*sizeof(char));
+    strcpy(heap_string[HeapSize_string].fileName,fileName);
+    heap_string[HeapSize_string].address=address;
+    Heap_ele_string temp=heap_string[HeapSize_string];
+    int k=HeapSize_string;
+    for(int i=1;i<HeapSize_string;i++){
+        if(strcmp(heap_string[i].data,temp.data)>0){
+            k=i;
+            temp=heap_string[i];
+        }
+    }
+    if(k!=HeapSize_string){
+        temp=heap_string[HeapSize_string];
+        heap_string[HeapSize_string]=heap_string[k];
+        heap_string[k]=temp;
+    }
+}
+Heap_ele_string Delete_string_reverse(){
+    Heap_ele_string res=heap_string[HeapSize_string];
+    --HeapSize_string;
+    Heap_ele_string temp=heap_string[HeapSize_string];
+    int k=HeapSize_string;
+    for(int i=1;i<HeapSize_string;i++){
+        if(strcmp(heap_string[i].data,temp.data)>0){
+            k=i;
+            temp=heap_string[i];
+        }
+    }
+    if(k!=HeapSize_string){
+        temp=heap_string[HeapSize_string];
+        heap_string[HeapSize_string]=heap_string[k];
+        heap_string[k]=temp;
+    }
+    return res;
+}
+void Insert_string_reverse_ignore(char *data,char *fileName,fpos_t address){
+    HeapSize_string++;
+    heap_string[HeapSize_string].data=(char *)malloc((strlen(data)+1)*sizeof(char));
+    strcpy(heap_string[HeapSize_string].data,data);
+    heap_string[HeapSize_string].fileName=(char *)malloc((strlen(fileName)+1)*sizeof(char));
+    strcpy(heap_string[HeapSize_string].fileName,fileName);
+    heap_string[HeapSize_string].address=address;
+    Heap_ele_string temp=heap_string[HeapSize_string];
+    int k=HeapSize_string;
+    for(int i=1;i<HeapSize_string;i++){
+        if(strcasecmp(heap_string[i].data,temp.data)>0){
+            k=i;
+            temp=heap_string[i];
+        }
+    }
+    if(k!=HeapSize_string){
+        temp=heap_string[HeapSize_string];
+        heap_string[HeapSize_string]=heap_string[k];
+        heap_string[k]=temp;
+    }
+}
+Heap_ele_string Delete_string_reverse_ignore(){
+    Heap_ele_string res=heap_string[HeapSize_string];
+    --HeapSize_string;
+    Heap_ele_string temp=heap_string[HeapSize_string];
+    int k=HeapSize_string;
+    for(int i=1;i<HeapSize_string;i++){
+        if(strcasecmp(heap_string[i].data,temp.data)>0){
+            k=i;
+            temp=heap_string[i];
+        }
+    }
+    if(k!=HeapSize_string){
+        temp=heap_string[HeapSize_string];
+        heap_string[HeapSize_string]=heap_string[k];
+        heap_string[k]=temp;
+    }
+    return res;
+}
+void Init_float(){
+    HeapSize_float=0;
+    heap_float[0].data=0;
+    heap_float[0].fileName="";
+}
+void Insert_float(float data,char *fileName,fpos_t address){
+    HeapSize_float++;
+    heap_float[HeapSize_float].data=data;
+    heap_float[HeapSize_float].fileName=(char *)malloc((strlen(fileName)+1)*sizeof(char));
+    strcpy(heap_float[HeapSize_float].fileName,fileName);
+    heap_float[HeapSize_float].address=address;
+    Heap_ele_float temp=heap_float[HeapSize_float];
+    int k=HeapSize_float;
+    for(int i=1;i<HeapSize_float;i++){
+        if(heap_float[i].data<temp.data){
+            k=i;
+            temp=heap_float[i];
+        }
+    }
+    if(k!=HeapSize_float){
+        temp=heap_float[HeapSize_float];
+        heap_float[HeapSize_float]=heap_float[k];
+        heap_float[k]=temp;
+    }
+}
+Heap_ele_float Delete_float(){
+    Heap_ele_float res=heap_float[HeapSize_float];
+    --HeapSize_float;
+    Heap_ele_float temp=heap_float[HeapSize_float];
+    int k=HeapSize_float;
+    for(int i=1;i<HeapSize_float;i++){
+        if(heap_float[i].data<temp.data){
+            k=i;
+            temp=heap_float[i];
+        }
+    }
+    if(k!=HeapSize_float){
+        temp=heap_float[HeapSize_float];
+        heap_float[HeapSize_float]=heap_float[k];
+        heap_float[k]=temp;
+    }
+    return res;
+}
+void Insert_float_reverse(float data,char *fileName,fpos_t address){
+    HeapSize_float++;
+    heap_float[HeapSize_float].data=data;
+    heap_float[HeapSize_float].fileName=(char *)malloc((strlen(fileName)+1)*sizeof(char));
+    strcpy(heap_float[HeapSize_float].fileName,fileName);
+    heap_float[HeapSize_float].address=address;
+    Heap_ele_float temp=heap_float[HeapSize_float];
+    int k=HeapSize_float;
+    for(int i=1;i<HeapSize_float;i++){
+        if(heap_float[i].data>temp.data){
+            k=i;
+            temp=heap_float[i];
+        }
+    }
+    if(k!=HeapSize_float){
+        temp=heap_float[HeapSize_float];
+        heap_float[HeapSize_float]=heap_float[k];
+        heap_float[k]=temp;
+    }
+}
+Heap_ele_float Delete_float_reverse(){
+    Heap_ele_float res=heap_float[HeapSize_float];
+    --HeapSize_float;
+    Heap_ele_float temp=heap_float[HeapSize_float];
+    int k=HeapSize_float;
+    for(int i=1;i<HeapSize_float;i++){
+        if(heap_float[i].data>temp.data){
+            k=i;
+            temp=heap_float[i];
+        }
+    }
+    if(k!=HeapSize_float){
+        temp=heap_float[HeapSize_float];
+        heap_float[HeapSize_float]=heap_float[k];
+        heap_float[k]=temp;
+    }
+    return res;
+}
 int count_lines(char *fileName){
     int l=0;
     FILE *In=fopen(fileName,"r");
@@ -25,9 +281,15 @@ int count_lines(char *fileName){
 }
 int compare_float (const void * a, const void * b)
 {
-  float fa = *(const float*) a;
-  float fb = *(const float*) b;
-  return (fa > fb) - (fa < fb);
+    float fa = *(const float*) a;
+    float fb = *(const float*) b;
+    return (fa > fb) - (fa < fb);
+}
+int compare_float_reverse (const void * a, const void * b)
+{
+    float fa = *(const float*) a;
+    float fb = *(const float*) b;
+    return (fa < fb) - (fa > fb);
 }
 int myCompare_non_ignore(const void* a, const void* b)
 {
@@ -36,6 +298,14 @@ int myCompare_non_ignore(const void* a, const void* b)
 int myCompare_ignore(const void* a, const void* b)
 {
     return strcasecmp(*(const char**)a, *(const char**)b);
+}
+int myCompare_non_ignore_reverse(const void* a, const void* b)
+{
+    return strcmp(*(const char**)b,*(const char**)a);
+}
+int myCompare_ignore_reverse(const void* a, const void* b)
+{
+    return strcasecmp(*(const char**)b,*(const char**)a);
 }
 void float_display(float arr[],int len,int r){
     if(r==1){
@@ -398,127 +668,648 @@ void append_sort_string(char *inputFileName,char *outputFileName,int r,int u,int
     }
     fclose(In);
 }
+void ext_float_sort(char *inputFileName,char *outputFileName,int r){
+    printf("Sorting externally\n");
+    Init_float();
+    struct stat sb;
+    stat(inputFileName,&sb);
+    int SizeF=sb.st_size;
+    int k=SizeF/102400;
+    if(SizeF%102400!=0){
+        k++;
+    }
+    FILE *In;
+    int i=1;
+    //int SizeF=0;
+    char str[1000];
+    if(r==0){
+        FILE *Op=fopen(inputFileName,"r");
+        while(i<=k){
+            char tf[10];
+            sprintf(tf,"%d",i);
+            strcat(tf,".txt");
+            In=fopen(tf,"w");
+            stat(tf,&sb);
+            int size_partF=sb.st_size;
+            int line=0;
+            while(size_partF<=102400 && fgets(str,1000,Op)){
+                line++;
+                if(str[strlen(str)-1]=='\n'){
+                    str[strlen(str)-1]='\0';
+                }
+                char *data=(char *)malloc((strlen(str)+1)*sizeof(char));
+                strcpy(data,str);
+                fprintf(In,"%s\n",data);
+                stat(tf,&sb);
+                size_partF=sb.st_size;
+            }
+            fclose(In);
+            float arr[line];
+            In=fopen(tf,"r");
+            int j=0;
+            while(fgets(str,1000,In)){
+                if(str[strlen(str)-1]=='\n'){
+                    str[strlen(str)-1]='\0';
+                }
+                arr[j]=atof(str);
+                j++;
+            }
+            qsort (arr, line, sizeof(float), compare_float);
+            fclose(In);
+            In=fopen(tf,"w");
+            fpos_t pos;
+            fprintf(In,"%f\n",arr[0]);
+            fgetpos(In,&pos);
+            char *filen=(char *)malloc((strlen(tf)+1)*sizeof(char));
+            strcpy(filen,tf);
+            Insert_float(arr[0],filen,pos);
+            for(int p=1;p<line;p++){
+                fprintf(In,"%f\n",arr[p]);
+            }
+            fclose(In);
+            i++;
+        }
+        fclose(Op);
+        Op=fopen(outputFileName,"a");
+        float data;
+        while(HeapSize_float>0){
+            Heap_ele_float res=Delete_float();
+            data=res.data;
+            if(((int)res.data-res.data)==0){
+                fprintf(Op,"%d\n",(int)data);
+            }
+            else{
+                fprintf(Op,"%f\n",data);
+            }
+            fpos_t posi;
+            In=fopen(res.fileName,"r");
+            fsetpos(In,&res.address);
+            fgets(str,1000,In);
+            fgetpos(In,&posi);
+            fsetpos(In,&res.address);
+            if(getc(In)!=EOF){
+                if(str[strlen(str)-1]=='\n'){
+                    str[strlen(str)-1]='\0';
+                }
+                Insert_float(atof(str),res.fileName,posi);
+            }
+            fclose(In);
+        }
+        fclose(Op);
+    }
+    else{
+        FILE *Op=fopen(inputFileName,"r");
+        while(i<=k){
+            char tf[10];
+            sprintf(tf,"%d",i);
+            strcat(tf,".txt");
+            In=fopen(tf,"w");
+            stat(tf,&sb);
+            int size_partF=sb.st_size;
+            int line=0;
+            while(size_partF<=102400 && fgets(str,1000,Op)){
+                line++;
+                if(str[strlen(str)-1]=='\n'){
+                    str[strlen(str)-1]='\0';
+                }
+                char *data=(char *)malloc((strlen(str)+1)*sizeof(char));
+                strcpy(data,str);
+                fprintf(In,"%s\n",data);
+                stat(tf,&sb);
+                size_partF=sb.st_size;
+            }
+            fclose(In);
+            float arr[line];
+            In=fopen(tf,"r");
+            int j=0;
+            while(fgets(str,1000,In)){
+                if(str[strlen(str)-1]=='\n'){
+                    str[strlen(str)-1]='\0';
+                }
+                arr[j]=atof(str);
+                j++;
+            }
+            qsort (arr, line, sizeof(float), compare_float_reverse);
+            fclose(In);
+            In=fopen(tf,"w");
+            fpos_t pos;
+            fprintf(In,"%f\n",arr[0]);
+            fgetpos(In,&pos);
+            char *filen=(char *)malloc((strlen(tf)+1)*sizeof(char));
+            strcpy(filen,tf);
+            Insert_float_reverse(arr[0],filen,pos);
+            for(int p=1;p<line;p++){
+                fprintf(In,"%f\n",arr[p]);
+            }
+            fclose(In);
+            i++;
+        }
+        fclose(Op);
+        Op=fopen(outputFileName,"a");
+        float data;
+        while(HeapSize_float>0){
+            Heap_ele_float res=Delete_float_reverse();
+            data=res.data;
+            if(((int)res.data-res.data)==0){
+                fprintf(Op,"%d\n",(int)data);
+            }
+            else{
+                fprintf(Op,"%f\n",data);
+            }
+            
+            fpos_t posi;
+            In=fopen(res.fileName,"r");
+            fsetpos(In,&res.address);
+            fgets(str,1000,In);
+            fgetpos(In,&posi);
+            fsetpos(In,&res.address);
+            if(getc(In)!=EOF){
+                if(str[strlen(str)-1]=='\n'){
+                    str[strlen(str)-1]='\0';
+                }
+                Insert_float_reverse(atof(str),res.fileName,posi);
+            }
+            fclose(In);
+        }
+        fclose(Op);
+    }
+}
+void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
+    printf("Sorting externally string\n");
+    Init_string();
+    struct stat sb;
+    stat(inputFileName,&sb);
+    int SizeF=sb.st_size;
+    int k=SizeF/102400;
+    if(SizeF%102400!=0){
+        k++;
+    }
+    FILE *In;
+    int i=1;
+    //int SizeF=0;
+    char str[1000];
+    if(r==0){
+        if(I==1){
+            //call ignore non reverse functions
+            FILE *Op=fopen(inputFileName,"r");
+            while(i<=k){
+                char tf[10];
+                sprintf(tf,"%d",i);
+                strcat(tf,".txt");
+                In=fopen(tf,"w");
+                stat(tf,&sb);
+                int size_partF=sb.st_size;
+                int line=0;
+                while(size_partF<=102400 && fgets(str,1000,Op)){
+                    line++;
+                    if(str[strlen(str)-1]=='\n'){
+                        str[strlen(str)-1]='\0';
+                    }
+                    char *data=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(data,str);
+                    fprintf(In,"%s\n",data);
+                    stat(tf,&sb);
+                    size_partF=sb.st_size;
+                }
+                fclose(In);
+                char *arr[line];
+                In=fopen(tf,"r");
+                int j=0;
+                while(fgets(str,1000,In)){
+                    if(str[strlen(str)-1]=='\n'){
+                        str[strlen(str)-1]='\0';
+                    }
+
+                    arr[j]=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(arr[j],str);
+                    j++;
+                }
+                qsort (arr, line, sizeof(const char*),myCompare_ignore);
+                fclose(In);
+                In=fopen(tf,"w");
+                fpos_t pos;
+                fprintf(In,"%s\n",arr[0]);
+                fgetpos(In,&pos);
+                char *filen=(char *)malloc((strlen(tf)+1)*sizeof(char));
+                strcpy(filen,tf);
+                Insert_string_ignore(arr[0],filen,pos);
+                for(int p=1;p<line;p++){
+                    fprintf(In,"%s\n",arr[p]);
+                }
+                fclose(In);
+                i++;
+            }
+            fclose(Op);
+            Op=fopen(outputFileName,"w");
+            char *data;
+            while(HeapSize_string>0){
+                Heap_ele_string res=Delete_string_ignore();
+                data=(char *)malloc((strlen(res.data)+1)*sizeof(char));
+                strcpy(data,res.data);
+                if(data[strlen(data)-1]=='\n'){
+                    data[strlen(data)-1]='\0';
+                }
+                fprintf(Op,"%s\n",data);
+                fpos_t posi;
+                In=fopen(res.fileName,"r");
+                fsetpos(In,&res.address);
+                fgets(str,1000,In);
+                fgetpos(In,&posi);
+                fsetpos(In,&res.address);
+                if(getc(In)!=EOF){
+                    char *di=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(di,str);
+                    Insert_string_ignore(di,res.fileName,posi);
+                }
+                fclose(In);
+            }
+            fclose(Op);
+        }
+        else{
+            //call non ignore non reverse functions
+            FILE *Op=fopen(inputFileName,"r");
+            while(i<=k){
+                char tf[10];
+                sprintf(tf,"%d",i);
+                strcat(tf,".txt");
+                In=fopen(tf,"w");
+                stat(tf,&sb);
+                int size_partF=sb.st_size;
+                int line=0;
+                while(size_partF<=102400 && fgets(str,1000,Op)){
+                    line++;
+                    if(str[strlen(str)-1]=='\n'){
+                        str[strlen(str)-1]='\0';
+                    }
+                    char *data=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(data,str);
+                    fprintf(In,"%s\n",data);
+                    stat(tf,&sb);
+                    size_partF=sb.st_size;
+                }
+                fclose(In);
+                char *arr[line];
+                In=fopen(tf,"r");
+                int j=0;
+                while(fgets(str,1000,In)){
+                    if(str[strlen(str)-1]=='\n'){
+                        str[strlen(str)-1]='\0';
+                    }
+
+                    arr[j]=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(arr[j],str);
+                    j++;
+                }
+                qsort (arr, line, sizeof(const char*),myCompare_non_ignore);
+                fclose(In);
+                In=fopen(tf,"w");
+                fpos_t pos;
+                fprintf(In,"%s\n",arr[0]);
+                fgetpos(In,&pos);
+                char *filen=(char *)malloc((strlen(tf)+1)*sizeof(char));
+                strcpy(filen,tf);
+                Insert_string(arr[0],filen,pos);
+                for(int p=1;p<line;p++){
+                    fprintf(In,"%s\n",arr[p]);
+                }
+                fclose(In);
+                i++;
+            }
+            fclose(Op);
+            Op=fopen(outputFileName,"w");
+            char *data;
+            while(HeapSize_string>0){
+                Heap_ele_string res=Delete_string();
+                data=(char *)malloc((strlen(res.data)+1)*sizeof(char));
+                strcpy(data,res.data);
+                if(data[strlen(data)-1]=='\n'){
+                    data[strlen(data)-1]='\0';
+                }
+                fprintf(Op,"%s\n",data);
+                fpos_t posi;
+                In=fopen(res.fileName,"r");
+                fsetpos(In,&res.address);
+                fgets(str,1000,In);
+                fgetpos(In,&posi);
+                fsetpos(In,&res.address);
+                if(getc(In)!=EOF){
+                    char *di=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(di,str);
+                    Insert_string(di,res.fileName,posi);
+                }
+                fclose(In);
+            }
+            fclose(Op);
+        }
+    }
+    else{
+        //printf("reverse\n");
+        if(I==1){
+            //call ignore reverse functions
+            
+            FILE *Op=fopen(inputFileName,"r");
+            while(i<=k){
+                char tf[10];
+                sprintf(tf,"%d",i);
+                strcat(tf,".txt");
+                In=fopen(tf,"w");
+                stat(tf,&sb);
+                int size_partF=sb.st_size;
+                int line=0;
+                while(size_partF<=102400 && fgets(str,1000,Op)){
+                    line++;
+                    if(str[strlen(str)-1]=='\n'){
+                        str[strlen(str)-1]='\0';
+                    }
+                    char *data=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(data,str);
+                    fprintf(In,"%s\n",data);
+                    stat(tf,&sb);
+                    size_partF=sb.st_size;
+                }
+                fclose(In);
+                char *arr[line];
+                In=fopen(tf,"r");
+                int j=0;
+                while(fgets(str,1000,In)){
+                    if(str[strlen(str)-1]=='\n'){
+                        str[strlen(str)-1]='\0';
+                    }
+
+                    arr[j]=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(arr[j],str);
+                    j++;
+                }
+                qsort (arr, line, sizeof(const char*),myCompare_ignore_reverse);
+                fclose(In);
+                In=fopen(tf,"w");
+                fpos_t pos;
+                fprintf(In,"%s\n",arr[0]);
+                fgetpos(In,&pos);
+                char *filen=(char *)malloc((strlen(tf)+1)*sizeof(char));
+                strcpy(filen,tf);
+                Insert_string_reverse_ignore(arr[0],filen,pos);
+                for(int p=1;p<line;p++){
+                    fprintf(In,"%s\n",arr[p]);
+                }
+                fclose(In);
+                i++;
+            }
+            fclose(Op);
+            Op=fopen(outputFileName,"w");
+            char *data;
+            while(HeapSize_string>0){
+                Heap_ele_string res=Delete_string_reverse_ignore();
+                data=(char *)malloc((strlen(res.data)+1)*sizeof(char));
+                strcpy(data,res.data);
+                if(data[strlen(data)-1]=='\n'){
+                    data[strlen(data)-1]='\0';
+                }
+                fprintf(Op,"%s\n",data);
+                fpos_t posi;
+                In=fopen(res.fileName,"r");
+                fsetpos(In,&res.address);
+                fgets(str,1000,In);
+                fgetpos(In,&posi);
+                fsetpos(In,&res.address);
+                if(getc(In)!=EOF){
+                    char *di=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(di,str);
+                    Insert_string_reverse_ignore(di,res.fileName,posi);
+                }
+                fclose(In);
+            }
+            fclose(Op);            
+        }
+        else{
+            printf("not ignore reverse\n");
+            //call non ignore reverse functions
+            FILE *Op=fopen(inputFileName,"r");
+            while(i<=k){
+                char tf[10];
+                sprintf(tf,"%d",i);
+                strcat(tf,".txt");
+                In=fopen(tf,"w");
+                stat(tf,&sb);
+                int size_partF=sb.st_size;
+                int line=0;
+                while(size_partF<=102400 && fgets(str,1000,Op)){
+                    line++;
+                    if(str[strlen(str)-1]=='\n'){
+                        str[strlen(str)-1]='\0';
+                    }
+                    char *data=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(data,str);
+                    fprintf(In,"%s\n",data);
+                    stat(tf,&sb);
+                    size_partF=sb.st_size;
+                }
+                fclose(In);
+                char *arr[line];
+                In=fopen(tf,"r");
+                int j=0;
+                while(fgets(str,1000,In)){
+                    if(str[strlen(str)-1]=='\n'){
+                        str[strlen(str)-1]='\0';
+                    }
+
+                    arr[j]=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(arr[j],str);
+                    j++;
+                }
+                qsort (arr, line, sizeof(const char*),myCompare_non_ignore_reverse);
+                fclose(In);
+                In=fopen(tf,"w");
+                fpos_t pos;
+                fprintf(In,"%s\n",arr[0]);
+                fgetpos(In,&pos);
+                char *filen=(char *)malloc((strlen(tf)+1)*sizeof(char));
+                strcpy(filen,tf);
+                Insert_string_reverse(arr[0],filen,pos);
+                for(int p=1;p<line;p++){
+                    fprintf(In,"%s\n",arr[p]);
+                }
+                fclose(In);
+                i++;
+            }
+            fclose(Op);
+            Op=fopen(outputFileName,"w");
+            char *data;
+            while(HeapSize_string>0){
+                Heap_ele_string res=Delete_string_reverse();
+                data=(char *)malloc((strlen(res.data)+1)*sizeof(char));
+                strcpy(data,res.data);
+                if(data[strlen(data)-1]=='\n'){
+                    data[strlen(data)-1]='\0';
+                }
+                fprintf(Op,"%s\n",data);
+                fpos_t posi;
+                In=fopen(res.fileName,"r");
+                fsetpos(In,&res.address);
+                fgets(str,1000,In);
+                fgetpos(In,&posi);
+                fsetpos(In,&res.address);
+                if(getc(In)!=EOF){
+                    char *di=(char *)malloc((strlen(str)+1)*sizeof(char));
+                    strcpy(di,str);
+                    Insert_string_reverse(di,res.fileName,posi);
+                }
+                fclose(In);
+            }
+            fclose(Op);
+        }
+
+    }
+}
+void External_Sort(flags set,char *inputFileName,char *outputFileName){
+    if(set.output==0){
+        printf("Please type a valid output filename\n");
+        return;
+    }
+    FILE *In=fopen(inputFileName,"r");
+    if(In==NULL){
+        printf("Cannot Open File!\n");
+        fclose(In);
+        return;
+    }
+    //fclose(In);
+    else{
+        fclose(In);
+        //append the elements
+        if(set.numeric==1){
+            //sort float
+            if(set.reverse==1){
+                //append reverse
+                ext_float_sort(inputFileName,outputFileName,1);
+            }
+            else{
+                //append ascending
+                ext_float_sort(inputFileName,outputFileName,0);
+            }
+        }
+
+
+        else{
+            if(set.ignore==1){
+                //check for lower case
+                if(set.reverse==1){
+                    //append in reverse order
+                    ext_string_sort(inputFileName,outputFileName,1,1);
+                }
+                else{
+                    //append in ascending order
+                    ext_string_sort(inputFileName,outputFileName,1,0);
+                }
+            }
+            else{
+                //check normally
+                if(set.reverse==1){
+                    //append in reverse
+                    ext_string_sort(inputFileName,outputFileName,0,1);
+                }
+                else{
+                    //append in ascending
+                    ext_string_sort(inputFileName,outputFileName,0,0);
+                }
+            }
+        }
+    }
+}
+
+
+
 void sort(flags set,char *input_file_name,char *output_file_name){
     
     struct stat sb;
     stat(input_file_name,&sb);
     int SizeF=sb.st_size;
     int extSort=0;
-    if(SizeF>=1000000){
+    if(SizeF>=40){
         extSort=1;
+        External_Sort(set,input_file_name,output_file_name);
     }
-    if(set.output==0){
-        //print the output
-        if(set.numeric==1){
-            //numeric sort
-            if(set.reverse==1){
-                //print in reverse
-                if(set.unique==1){
-                    //print out unique elements
-                    print_sort_numeric(input_file_name,1,1);
-                }
-                else{
-                    //print out all
-                    print_sort_numeric(input_file_name,1,0);
-                }
-            }
-            else{
-                //print in normal order
-                if(set.unique==1){
-                    //print out unique elements
-                    print_sort_numeric(input_file_name,0,1);
-                }
-                else{
-                    //print out all
-                    print_sort_numeric(input_file_name,0,0);
-                }
-            }
-        }
-
-
-
-        else{
-            //do the normal sort
-            if(set.ignore==1){
-                //check with lower case
-                if(set.reverse==1){
-                //print in reverse
-                    if(set.unique==1){
-                        //print out unique elements
-                        print_sort_string(input_file_name,1,1,1);
-                    }
-                    else{
-                        //print out all
-                        print_sort_string(input_file_name,1,0,1);
-                    }
-                }
-                else{
-                    //print in normal order
-                    if(set.unique==1){
-                        //print out unique elements
-                        print_sort_string(input_file_name,0,1,1);
-                    }
-                    else{
-                        //print out all
-                        print_sort_string(input_file_name,0,0,1);
-                    }
-                }
-            }
-            else{
-                //check normal
+    else{
+        if(set.output==0){
+            //print the output
+            if(set.numeric==1){
+                //numeric sort
                 if(set.reverse==1){
                     //print in reverse
                     if(set.unique==1){
                         //print out unique elements
-                        print_sort_string(input_file_name,1,1,0);
+                        print_sort_numeric(input_file_name,1,1);
                     }
                     else{
                         //print out all
-                        print_sort_string(input_file_name,1,0,0);
+                        print_sort_numeric(input_file_name,1,0);
                     }
                 }
                 else{
                     //print in normal order
                     if(set.unique==1){
                         //print out unique elements
-                        print_sort_string(input_file_name,0,1,0);
+                        print_sort_numeric(input_file_name,0,1);
                     }
                     else{
                         //print out all
-                        print_sort_string(input_file_name,0,0,0);
+                        print_sort_numeric(input_file_name,0,0);
                     }
                 }
             }
-        }
-    }
 
 
 
-    else{
-        //printf("hey\n");
-        //append the output to filename output_file_name
-        if(set.numeric==1){
-            //numeric sort
-            if(set.reverse==1){
-                //append in reverse
-                if(set.unique==1){
-                    //append out unique elements
-                    append_sort_numeric(input_file_name,output_file_name,1,1);
-                }
-                else{
-                    //append out all
-                    append_sort_numeric(input_file_name,output_file_name,1,0);
-                }
-            }
             else{
-                //append in normal order
-                if(set.unique==1){
-                    //append out unique elements
-                    append_sort_numeric(input_file_name,output_file_name,0,1);
+                //do the normal sort
+                if(set.ignore==1){
+                    //check with lower case
+                    if(set.reverse==1){
+                    //print in reverse
+                        if(set.unique==1){
+                            //print out unique elements
+                            print_sort_string(input_file_name,1,1,1);
+                        }
+                        else{
+                            //print out all
+                            print_sort_string(input_file_name,1,0,1);
+                        }
+                    }
+                    else{
+                        //print in normal order
+                        if(set.unique==1){
+                            //print out unique elements
+                            print_sort_string(input_file_name,0,1,1);
+                        }
+                        else{
+                            //print out all
+                            print_sort_string(input_file_name,0,0,1);
+                        }
+                    }
                 }
                 else{
-                    //append out all
-                    append_sort_numeric(input_file_name,output_file_name,0,0);
+                    //check normal
+                    if(set.reverse==1){
+                        //print in reverse
+                        if(set.unique==1){
+                            //print out unique elements
+                            print_sort_string(input_file_name,1,1,0);
+                        }
+                        else{
+                            //print out all
+                            print_sort_string(input_file_name,1,0,0);
+                        }
+                    }
+                    else{
+                        //print in normal order
+                        if(set.unique==1){
+                            //print out unique elements
+                            print_sort_string(input_file_name,0,1,0);
+                        }
+                        else{
+                            //print out all
+                            print_sort_string(input_file_name,0,0,0);
+                        }
+                    }
                 }
             }
         }
@@ -526,54 +1317,86 @@ void sort(flags set,char *input_file_name,char *output_file_name){
 
 
         else{
-            //do the normal sort
-            if(set.ignore==1){
-                //check with lower
+            //printf("hey\n");
+            //append the output to filename output_file_name
+            if(set.numeric==1){
+                //numeric sort
                 if(set.reverse==1){
                     //append in reverse
                     if(set.unique==1){
                         //append out unique elements
-                        append_sort_string(input_file_name,output_file_name,1,1,1);
+                        append_sort_numeric(input_file_name,output_file_name,1,1);
                     }
                     else{
                         //append out all
-                        append_sort_string(input_file_name,output_file_name,1,0,1);
+                        append_sort_numeric(input_file_name,output_file_name,1,0);
                     }
                 }
                 else{
                     //append in normal order
                     if(set.unique==1){
                         //append out unique elements
-                        append_sort_string(input_file_name,output_file_name,0,1,1);
+                        append_sort_numeric(input_file_name,output_file_name,0,1);
                     }
                     else{
                         //append out all
-                        append_sort_string(input_file_name,output_file_name,0,0,1);
+                        append_sort_numeric(input_file_name,output_file_name,0,0);
                     }
                 }
             }
+
+
+
             else{
-                //check normal
-                if(set.reverse==1){
-                    //append in reverse
-                    if(set.unique==1){
-                        //append out unique elements
-                        append_sort_string(input_file_name,output_file_name,1,1,0);
+                //do the normal sort
+                if(set.ignore==1){
+                    //check with lower
+                    if(set.reverse==1){
+                        //append in reverse
+                        if(set.unique==1){
+                            //append out unique elements
+                            append_sort_string(input_file_name,output_file_name,1,1,1);
+                        }
+                        else{
+                            //append out all
+                            append_sort_string(input_file_name,output_file_name,1,0,1);
+                        }
                     }
                     else{
-                        //append out all
-                        append_sort_string(input_file_name,output_file_name,1,0,0);
+                        //append in normal order
+                        if(set.unique==1){
+                            //append out unique elements
+                            append_sort_string(input_file_name,output_file_name,0,1,1);
+                        }
+                        else{
+                            //append out all
+                            append_sort_string(input_file_name,output_file_name,0,0,1);
+                        }
                     }
                 }
                 else{
-                    //append in normal order
-                    if(set.unique==1){
-                        //append out unique elements
-                        append_sort_string(input_file_name,output_file_name,0,1,0);
+                    //check normal
+                    if(set.reverse==1){
+                        //append in reverse
+                        if(set.unique==1){
+                            //append out unique elements
+                            append_sort_string(input_file_name,output_file_name,1,1,0);
+                        }
+                        else{
+                            //append out all
+                            append_sort_string(input_file_name,output_file_name,1,0,0);
+                        }
                     }
                     else{
-                        //append out all
-                        append_sort_string(input_file_name,output_file_name,0,0,0);
+                        //append in normal order
+                        if(set.unique==1){
+                            //append out unique elements
+                            append_sort_string(input_file_name,output_file_name,0,1,0);
+                        }
+                        else{
+                            //append out all
+                            append_sort_string(input_file_name,output_file_name,0,0,0);
+                        }
                     }
                 }
             }
@@ -581,7 +1404,7 @@ void sort(flags set,char *input_file_name,char *output_file_name){
     }
 }
 int main (int argc,char* argv[]){
-	FILE *f;
+    FILE* new_f;
 	flags opt;
     opt.numeric=0;
     opt.reverse=0;
@@ -590,8 +1413,9 @@ int main (int argc,char* argv[]){
     opt.output=0;
     opt.ignore=0;
 	int c;
-
-	while ((c = getopt (argc, argv, "nrcuof")) != -1){
+	char outfilename[50];
+	strcpy(outfilename, "\0");
+	while ((c = getopt (argc, argv, "nrcufo:")) != -1){
     printf ("Option detected %d\n", c);
     switch (c)
     {
@@ -611,32 +1435,54 @@ int main (int argc,char* argv[]){
             opt.unique=1;
             printf("Unique flag detected\n");
             break;
-        case 'o':
-            opt.output=1;
-            printf("Output flag detected\n");
-            break;
-         case 'f':
+          case 'f':
             opt.ignore=1;
             printf("Ignore flag detected\n");
-            break;		   	   	   
+            break;	    
+        case 'o':
+            opt.output=1;
+            strcpy(outfilename,optarg);
+            printf("Output flag detected\n");
+            printf("%s\n",outfilename);
+            break;
+       	   	   	   
        case '?':
        	 printf("Invalid Option %c\n", optopt);
        	 exit (1);
 	  }
     }
-    
-    if (argc-optind != 1) {
- 		printf("Please specify exactly one input file\n");
- 		exit (1);
-	 }
-	
-	f = fopen(argv[optind], "r");
-	if (f == NULL) {
-		printf("File %s does not exist\n", argv[optind]);
-		exit (1);
-        fclose(f);
+	int k=optind;
+	new_f=fopen("merged.txt","a");
+	if(argc-optind==1){
+		 sort(opt,argv[optind],outfilename);
 	}
-    fclose(f);
-    sort(opt,argv[optind],"result.txt");
+	else{
+        while(k<argc){
+            char ele[100]="";
+            FILE *f = fopen(argv[k], "r");
+            if (f == NULL) {
+                printf("File %s does not exist\n", argv[k]);
+                exit (1);
+                fclose(f);
+            }
+            else{
+                while(fgets(ele,100,f)){
+                    if(ele[strlen(ele)-1]=='\n'){
+                        ele[strlen(ele)-1]='\0';
+                    }
+                    fprintf(new_f,"%s\n",ele);
+                }
+            }
+            fclose(f);
+            k++;
+        }
+        printf("file created\n");
+        fclose(new_f);
+        if(new_f!=NULL){
+            sort(opt,"merged.txt",outfilename);
+            remove("merged.txt");
+        }
+	
+    }
     return 0;
 }
