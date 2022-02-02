@@ -13,6 +13,7 @@ typedef struct flags{
     int output;
     int ignore;
     int help;
+    int line;
 }flags;
 typedef struct Heap_float{
     float data;
@@ -481,7 +482,6 @@ void print_sort_string(char *fileName,int r,int u,int i){
     else{
         //use normal comparator
         int l=count_lines(fileName);
-        printf("%d\n",l);
         char *arr[l];
         arr[0]=(char *)malloc(sizeof(char)*1000);
         int j=0;
@@ -1219,12 +1219,18 @@ void External_Sort(flags set,char *inputFileName,char *outputFileName){
 
 
 void sort(flags set,char *input_file_name,char *output_file_name){
-    
+    if(set.line==1){
+        FILE *In=fopen(input_file_name,"r");
+        if(In==NULL){
+            return;
+        }
+        printf("No. of Lines: %d\n",count_lines(input_file_name));
+    }
     struct stat sb;
     stat(input_file_name,&sb);
     int SizeF=sb.st_size;
     int extSort=0;
-    if(SizeF>=40){
+    if(SizeF>=100000){
         extSort=1;
         External_Sort(set,input_file_name,output_file_name);
     }
@@ -1412,10 +1418,11 @@ int main (int argc,char* argv[]){
     opt.unique=0;
     opt.output=0;
     opt.ignore=0;
+    opt.line=0;
 	int c;
 	char outfilename[50];
 	strcpy(outfilename, "\0");
-	while ((c = getopt (argc, argv, "nrcufo:")) != -1){
+	while ((c = getopt (argc, argv, "nrculfo:")) != -1){
     printf ("Option detected %d\n", c);
     switch (c)
     {
@@ -1438,6 +1445,10 @@ int main (int argc,char* argv[]){
           case 'f':
             opt.ignore=1;
             printf("Ignore flag detected\n");
+            break;
+        case 'l':
+            opt.line=1;
+            printf("Line flag detected\n");
             break;	    
         case 'o':
             opt.output=1;
