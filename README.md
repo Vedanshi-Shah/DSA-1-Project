@@ -24,15 +24,18 @@ Usage: ./sort -o [OUTPUT_FILE_NAME] [OPTION] [FILE]
 
 The help command -h lists down all the available options along with their usage that can be used to sort a file accordingly.
 
-<img width="500" height="400" alt="help"  src="https://user-images.githubusercontent.com/82633814/152694208-9c044e08-95f9-4d15-af29-5154c187c17e.png">
+<img width="500" height="400" alt="help" src="https://user-images.githubusercontent.com/82633814/152696362-1d74e521-8fff-46ff-810e-0d549ca4250b.png">
 
 For example, If we want to sort a file numerically in desending order ,here's how we will execute it:-
 
-<img  width="600" height="200" alt="number_sort" src="https://user-images.githubusercontent.com/82633814/152695734-0d90476c-0409-4b8a-a3bc-4c1f01e63ae6.png">
+<img  width="600" height="200" alt="number_sort" src="https://user-images.githubusercontent.com/82633814/152696415-25d0a40b-8b37-41e0-845c-c880b7fac189.png">
+
+
 
 ## CONTRIBUTORS
 <a href="https://github.com/Vedanshi-Shah">VEDANSHI SHAH </a>
 
 <a href="https://github.com/sneha-0723">SNEHA VENKATESWARAN </a>
+
 
 
