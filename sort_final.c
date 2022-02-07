@@ -884,7 +884,7 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
     }
 }
 void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
-    printf("Sorting externally string\n");
+    printf("Sorting externally\n");
     Init_string();
     struct stat sb;
     stat(inputFileName,&sb);
@@ -1169,7 +1169,6 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
             }            
         }
         else{
-            printf("not ignore reverse\n");
             //call non ignore reverse functions
             FILE *Op=fopen(inputFileName,"r");
             while(i<=k){

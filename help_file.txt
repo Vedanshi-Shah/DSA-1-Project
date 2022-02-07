@@ -1,29 +1,29 @@
 SORT
 
 Syntax : ./a.out   <operations>    <filename>
-                  ./a.out  -r test1.txt  (Reverse operation on test1.txt)
+              ./a.out  -r test1.txt  (Reverse operation on test1.txt)
 
 -n, --numeric-sort             
-                 compare according to string numerical value.
+              compare according to string numerical value.
 -r, --reverse	      
-                reverse the result of comparisons.
+              reverse the result of comparisons.
           
 -f, --ignore-case                 
-                  fold lower case to upper case characters.
+              fold lower case to upper case characters.
               
 -u, --unique                          
-                  removes duplicates from the sorted list.
+              removes duplicates from the sorted list.
               
 -l ,--count_lines                   
-                   returns the number of lines in a file.
+              returns the number of lines in a file.
               
 -o <filename> --output ,  
-                  write result to FILE instead of standard output
-        
-           Example:
-                  ./a.out  -o output.txt -n numbers.txt
-                  Output file  output.txt created with sorted numbers.
+              write result to FILE instead of standard output
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Example:
+              ./a.out  -o output.txt -n numbers.txt
+              Output file  output.txt created with sorted numbers.
 
 -h ,--help
-                  display the help and exit
+              display the help and exit
       
