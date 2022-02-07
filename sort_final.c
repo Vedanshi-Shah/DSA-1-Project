@@ -395,6 +395,14 @@ void print_sort_numeric(char *fileName,int r,int u){
             if(str[strlen(str)-1]=='\n'){
                 str[strlen(str)-1]='\0';
             }
+            //printf("len: %ld\n",strlen(str));
+            for(int z=0;str[z]!='\0' && z<strlen(str);z++){
+                if(!(str[z]=='-' || str[z]=='.' || (str[z]>=48 && str[z]<=57) || (str[z]>=0 && str[z]<=31))){
+                    //printf("char: %c\n",str[z]);
+                    printf("Cannot be sorted numerically\n");
+                    exit(0);
+                }
+            }
             arr[j]=atof(str);
             j++;
         }
@@ -537,6 +545,13 @@ void append_sort_numeric(char *inputFileName,char *outputFileName,int r,int u){
         while(fgets(str,1000,In)){
             if(str[strlen(str)-1]=='\n'){
                 str[strlen(str)-1]='\0';
+            }
+            for(int z=0;str[z]!='\0' && z<strlen(str);z++){
+                if(!(str[z]=='-' || str[z]=='.' || (str[z]>=48 && str[z]<=57) || (str[z]>=0 && str[z]<=31))){
+                    //printf("char: %c\n",str[z]);
+                    printf("Cannot be sorted numerically\n");
+                    exit(0);
+                }
             }
             arr[j]=atof(str);
             j++;
@@ -696,6 +711,12 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
                 if(str[strlen(str)-1]=='\n'){
                     str[strlen(str)-1]='\0';
                 }
+                for(int z=0;str[z]!='\0' && z<strlen(str);z++){
+                    if(!(str[z]=='-' || str[z]=='.' || (str[z]>=48 && str[z]<=57) || (str[z]>=0 && str[z]<=31))){
+                        printf("Cannot be sorted numerically\n");
+                        exit(0);
+                    }
+                }
                 char *data=(char *)malloc((strlen(str)+1)*sizeof(char));
                 strcpy(data,str);
                 fprintf(In,"%s\n",data);
@@ -703,6 +724,10 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
                 size_partF=sb.st_size;
             }
             fclose(In);
+            stat(tf,&sb);
+            if(sb.st_size==0){
+                break;
+            }
             float arr[line];
             In=fopen(tf,"r");
             int j=0;
@@ -728,6 +753,7 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
             fclose(In);
             i++;
         }
+        int n_of_chunks=i;
         fclose(Op);
         Op=fopen(outputFileName,"a");
         float data;
@@ -755,6 +781,12 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
             fclose(In);
         }
         fclose(Op);
+        for(int nc=1;nc<=n_of_chunks;nc++){
+            char tf[10];
+            sprintf(tf,"%d",nc);
+            strcat(tf,".txt");
+            remove(tf);
+        }
     }
     else{
         FILE *Op=fopen(inputFileName,"r");
@@ -771,6 +803,12 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
                 if(str[strlen(str)-1]=='\n'){
                     str[strlen(str)-1]='\0';
                 }
+                for(int z=0;z<strlen(str);z++){
+                    if(!(str[z]>=48 && str[z]<=57)){
+                        printf("Cannot be sorted numerically\n");
+                        exit(0);
+                    }
+                }
                 char *data=(char *)malloc((strlen(str)+1)*sizeof(char));
                 strcpy(data,str);
                 fprintf(In,"%s\n",data);
@@ -778,6 +816,11 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
                 size_partF=sb.st_size;
             }
             fclose(In);
+            stat(tf,&sb);
+            if(sb.st_size==0){
+                break;
+            }
+
             float arr[line];
             In=fopen(tf,"r");
             int j=0;
@@ -803,6 +846,7 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
             fclose(In);
             i++;
         }
+        int n_of_chunks=i;
         fclose(Op);
         Op=fopen(outputFileName,"a");
         float data;
@@ -831,6 +875,12 @@ void ext_float_sort(char *inputFileName,char *outputFileName,int r){
             fclose(In);
         }
         fclose(Op);
+        for(int nc=1;nc<=n_of_chunks;nc++){
+            char tf[10];
+            sprintf(tf,"%d",nc);
+            strcat(tf,".txt");
+            remove(tf);
+        }
     }
 }
 void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
@@ -871,6 +921,10 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                     size_partF=sb.st_size;
                 }
                 fclose(In);
+                stat(tf,&sb);
+                if(sb.st_size==0){
+                    break;
+                }
                 char *arr[line];
                 In=fopen(tf,"r");
                 int j=0;
@@ -885,6 +939,10 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 }
                 qsort (arr, line, sizeof(const char*),myCompare_ignore);
                 fclose(In);
+                stat(tf,&sb);
+                if(sb.st_size==0){
+                    break;
+                }
                 In=fopen(tf,"w");
                 fpos_t pos;
                 fprintf(In,"%s\n",arr[0]);
@@ -898,6 +956,7 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 fclose(In);
                 i++;
             }
+            int n_of_chunks=i;
             fclose(Op);
             Op=fopen(outputFileName,"w");
             char *data;
@@ -923,6 +982,12 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 fclose(In);
             }
             fclose(Op);
+            for(int nc=1;nc<=n_of_chunks;nc++){
+                char tf[10];
+                sprintf(tf,"%d",i);
+                strcat(tf,".txt");
+                remove(tf);
+            }
         }
         else{
             //call non ignore non reverse functions
@@ -947,6 +1012,10 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                     size_partF=sb.st_size;
                 }
                 fclose(In);
+                stat(tf,&sb);
+                if(sb.st_size==0){
+                    break;
+                }
                 char *arr[line];
                 In=fopen(tf,"r");
                 int j=0;
@@ -974,6 +1043,7 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 fclose(In);
                 i++;
             }
+            int n_of_chunks=i;
             fclose(Op);
             Op=fopen(outputFileName,"w");
             char *data;
@@ -999,7 +1069,14 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 fclose(In);
             }
             fclose(Op);
+            for(int nc=1;nc<=n_of_chunks;nc++){
+                char tf[10];
+                sprintf(tf,"%d",nc);
+                strcat(tf,".txt");
+                remove(tf);
+            }
         }
+        
     }
     else{
         //printf("reverse\n");
@@ -1028,6 +1105,10 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 }
                 fclose(In);
                 char *arr[line];
+                stat(tf,&sb);
+                if(sb.st_size==0){
+                    break;
+                }
                 In=fopen(tf,"r");
                 int j=0;
                 while(fgets(str,1000,In)){
@@ -1054,6 +1135,7 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 fclose(In);
                 i++;
             }
+            int n_of_chunks=i;
             fclose(Op);
             Op=fopen(outputFileName,"w");
             char *data;
@@ -1078,7 +1160,13 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 }
                 fclose(In);
             }
-            fclose(Op);            
+            fclose(Op);
+            for(int nc=1;nc<=n_of_chunks;nc++){
+                char tf[10];
+                sprintf(tf,"%d",nc);
+                strcat(tf,".txt");
+                remove(tf);
+            }            
         }
         else{
             printf("not ignore reverse\n");
@@ -1104,6 +1192,10 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                     size_partF=sb.st_size;
                 }
                 fclose(In);
+                stat(tf,&sb);
+                if(sb.st_size==0){
+                    break;
+                }
                 char *arr[line];
                 In=fopen(tf,"r");
                 int j=0;
@@ -1131,6 +1223,7 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 fclose(In);
                 i++;
             }
+            int n_of_chunks=i;
             fclose(Op);
             Op=fopen(outputFileName,"w");
             char *data;
@@ -1156,6 +1249,12 @@ void ext_string_sort(char *inputFileName,char *outputFileName,int I,int r){
                 fclose(In);
             }
             fclose(Op);
+            for(int nc=1;nc<=n_of_chunks;nc++){
+                char tf[10];
+                sprintf(tf,"%d",nc);
+                strcat(tf,".txt");
+                remove(tf);
+            }
         }
 
     }
@@ -1462,7 +1561,7 @@ int main (int argc,char* argv[]){
             opt.output=1;
             strcpy(outfilename,optarg);
             //printf("Output flag detected\n");
-            printf("%s\n",outfilename);
+            //printf("%s\n",outfilename);
             break;
        	   	   	   
        case '?':
@@ -1472,6 +1571,10 @@ int main (int argc,char* argv[]){
     }
 	int k=optind;
 	new_f=fopen("merged.txt","a");
+    if(argc-optind==0){
+        printf("Please input a valid command\n");
+        return 0;
+    }
 	if(argc-optind==1){
 		 sort(opt,argv[optind],outfilename);
 	}
@@ -1495,7 +1598,7 @@ int main (int argc,char* argv[]){
             fclose(f);
             k++;
         }
-        printf("file created\n");
+        //printf("file created\n");
         fclose(new_f);
         if(new_f!=NULL){
             sort(opt,"merged.txt",outfilename);
