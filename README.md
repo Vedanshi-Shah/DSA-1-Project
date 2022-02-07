@@ -8,6 +8,8 @@
 ***SORT*** is a standard command-line program that prints the lines of its input or concatenation of all files listed in its argument list in sorted order.
 The sort command is a command-line utility for sorting lines of text files. It supports sorting alphabetically, in reverse order, by number,by ignoring case sensitivity , and can also remove duplicates.
 
+***External Sorting*** : Sorts the contents of the file externally is size of file is greater than the RAM. We divide the file into chunks that will fit inside thr RAM ans sort hem individually and then merge it into a final output file using a modified heap.
+
 ## MADE WITH 
 
 <img width="50" height="50" alt="help"  src="https://user-images.githubusercontent.com/82633814/152695427-d723c262-6f47-4ca0-968f-280325a1e66f.jpg">
